@@ -186,14 +186,15 @@ Usage: release.sh [-celzdLCWHosu] [-t topdir] [-r releasedir] [-p curse-id] [-w 
   -m pkgmeta.yaml  Set the pkgmeta file to use.
 ```
 
-The following environment variables are necessary for uploading:
+In addition, the following environmental variables are accepted:
 
-- `CF_API_KEY` - a [CurseForge API token](https://wow.curseforge.com/account/api-tokens),
-  required for the CurseForge API to fetch localization and upload files.
-- `WOWI_API_TOKEN` - a [WoWInterface API token](https://www.wowinterface.com/downloads/filecpl.php?action=apitokens),
-  required for uploading to WoWInterface.
-- `GITHUB_OAUTH` - a [GitHub personal access token](https://github.com/settings/tokens),
-  required for uploading to GitHub.
+  - `CF_ID` - a CurseForge project ID.
+  - `CF_API_KEY` - a [CurseForge API token](https://wow.curseforge.com/account/api-tokens), **required** for the CurseForge API to fetch localization and upload files.
+  - `WOWI_ID` - a WoWInterface addon ID.
+  - `WOWI_ID_TEST` - a different WoWInterface addon ID for alpha/beta versions (optional).
+  - `WOWI_API_TOKEN` - a [WoWInterface API token](https://www.wowinterface.com/downloads/filecpl.php?action=apitokens), **required** for uploading to WoWInterface.
+  - `GITHUB_OAUTH` - a [GitHub personal access token](https://github.com/settings/tokens), **required** for uploading to Github.
+  - `TRAVIS`, `TRAVIS_PULL_REQUEST`, `TRAVIS_BRANCH`, `TRAVIS_TAG` - for usage in Travis CI
 
 __release.sh__ will attempt to load environment variables from a `.env` file in
 the topdir or current working directory.  You can also edit __release.sh__ and
