@@ -136,10 +136,10 @@ removing a '# ' at the beginning of each line in-between.
 
 The recommended way to include __release.sh__ in a project is to:
 
-1. Create a *.release* subdirectory in your top-level checkout.
-2. Copy __release.sh__ into the *.release* directory.
-3. Ignore the *.release* subdirectory in __.gitignore__.
-4. Run __release.sh__.
+1.  Create a *.release* subdirectory in your top-level checkout.
+2.  Copy __release.sh__ into the *.release* directory.
+3.  Ignore the *.release* subdirectory in __.gitignore__.
+4.  Run __release.sh__.
 
 ## Using release.sh to build a Classic release
 
@@ -162,24 +162,29 @@ __release.sh__ will target retail by default.  You can change this by passing a
 different game version as an argument.  To target classic this would be
 `release.sh -g 1.13.5`.
 
-## Usage
+# Usage
 
-    Usage: release.sh [-cdelLosuz] [-t topdir] [-r releasedir] [-p curse-id] [-w wowi-id] [-g game-version] [-m pkgmeta.yml]
-      -c               Skip copying files into the package directory.
-      -d               Skip uploading.
-      -e               Skip checkout of external repositories.
-      -l               Skip @localization@ keyword replacement.
-      -L               Only do @localization@ keyword replacement (skip upload to CurseForge).
-      -o               Keep existing package directory, overwriting its contents.
-      -s               Create a stripped-down "nolib" package.
-      -u               Use Unix line-endings.
-      -z               Skip zip file creation.
-      -t topdir        Set top-level directory of checkout.
-      -r releasedir    Set directory containing the package directory. Defaults to "$topdir/.release".
-      -p curse-id      Set the project id used on CurseForge for localization and uploading. (Use 0 to unset the TOC value)
-      -w wowi-id       Set the addon id used on WoWInterface for uploading. (Use 0 to unset the TOC value)
-      -g game-version  Set the game version to use for CurseForge uploading.
-      -m pkgmeta.yaml  Set the pkgmeta file to use.
+```
+Usage: release.sh [-celzdLCWHosu] [-t topdir] [-r releasedir] [-p curse-id] [-w wowi-id] [-w wowi-id-test] [-g game-version]
+  -c               Skip copying files into the package directory.
+  -e               Skip checkout of external repositories.
+  -l               Skip @localization@ keyword replacement.
+  -z               Skip zip file creation.
+  -d               Skip uploading.
+  -C|L             Skip upload to CurseForge.
+  -W               Skip upload to WoWInterface.
+  -H               Skip upload to GitHub.
+  -o               Keep existing package directory, overwriting its contents.
+  -s               Create a stripped-down "nolib" package.
+  -u               Use Unix line-endings.
+  -t topdir        Set top-level directory of checkout.
+  -r releasedir    Set directory containing the package directory. Defaults to "$topdir/.release".
+  -p curse-id      Set the project id used on CurseForge for localization and uploading. (Use 0 to unset the TOC value)
+  -w wowi-id       Set the addon id used on WoWInterface for uploading. (Use 0 to unset the TOC value)
+  -b wowi-id-test  Set the addon id used on WoWInterface for uploading alpha/beta versions.
+  -g game-version  Set the game version to use for CurseForge uploading.
+  -m pkgmeta.yaml  Set the pkgmeta file to use.
+```
 
 The following environment variables are necessary for uploading:
 

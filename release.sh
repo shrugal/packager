@@ -119,7 +119,7 @@ usage() {
 	echo "  -r releasedir    Set directory containing the package directory. Defaults to \"\$topdir/.release\"." >&2
 	echo "  -p curse-id      Set the project id used on CurseForge for localization and uploading. (Use 0 to unset the TOC value)" >&2
 	echo "  -w wowi-id       Set the addon id used on WoWInterface for uploading. (Use 0 to unset the TOC value)" >&2
-	echo "  -b wowi-id-test  Set the addon id used on WoWInterface for uploading unstable versions." >&2
+	echo "  -b wowi-id-test  Set the addon id used on WoWInterface for uploading alpha/beta versions." >&2
 	echo "  -g game-version  Set the game version to use for CurseForge uploading." >&2
 	echo "  -m pkgmeta.yaml  Set the pkgmeta file to use." >&2
 }
