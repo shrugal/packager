@@ -2462,7 +2462,7 @@ if [ -z "$skip_upload" ]; then
 				"name": "Version $tag",
 				"body": $( cat "$changelog_githost" | jq --slurp --raw-input '.' ),
 				"draft": false,
-				"prerelease": $( [[ "$release_type" =~ "release" ]] && echo true || echo false )
+				"prerelease": $( [[ "$release_type" != "release" ]] && echo true || echo false )
 			}
 			EOF
 			)
