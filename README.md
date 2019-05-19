@@ -12,7 +12,7 @@ __release.sh__ creates the new project directory in the *.release* subdirectory
 of the top-level directory of the checkout.
 
 __release.sh__ can also upload your zip file to CurseForge, WoWInterface, and
-GitHub (as a release), but requires [jq](https://stedolan.github.io/jq/). See
+GitHub/GitLab (as a release), but requires [jq](https://stedolan.github.io/jq/). See
 [Usage](#usage) for more info.
 
 __release.sh__ assumes that tags (Git annotated tags and SVN tags) are named for
