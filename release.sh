@@ -582,12 +582,12 @@ githost_token=${github_token:-$gitlab_token}
 #      and will be marked as an alpha.
 #   2) Otherwise, when a tagged commit is pushed, it will be flagged as either alpha, beta,
 #      or release depending on the tag itself:
-#        - If the tag contains the word "alpha", it will be marked as an alpha file.
+#        - If the tag contains the word "alpha" or "debug", it will be marked as an alpha file.
 #        - If instead the tag contains the word "beta", it will be marked as a beta file.
 # https://authors.curseforge.com/docs/packaging
 release_type="alpha"
 if [ -n "$tag" ]; then
-	if [[ "${tag,,}" == *"alpha"* ]]; then
+	if [[ "${tag,,}" == *"alpha"* || "${tag,,}" == *"debug"* ]]; then
 		release_type="alpha"
 	elif [[ "${tag,,}" == *"beta"* ]]; then
 		release_type="beta"
