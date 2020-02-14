@@ -615,20 +615,26 @@ if [ -n "$gitlab_slug" ]; then
 fi
 
 githost_url=${github_url:-$gitlab_url}
+githost_token=${github_token:-$gitlab_token}
 
-# Untagged commits or commit tags containing the word "alpha" are
-# considered alphas. If the tag contains only dots and digits and
-# optionally starts with the letter v (such as "v1.2.3" or "v1.23"
-# or "3.2") or contains the word "release" or "stable", then it is
-# considered a release tag. If the above conditions don't match, it
-# is considered a beta tag.
-release_type=
-if [[ -z $tag || "${tag,,}" == *"alpha"* ]]; then
-	release_type=alpha
-elif [[ "$tag" =~ ^v?[0-9][0-9.]*$ || "${tag,,}" == *"release"* || "${tag,,}" == *"stable"* ]]; then
-	release_type=release
-else
-	release_type=beta
+# When packaging is triggered on your repository, the generated file’s release type will
+# automatically be set based on two factors:
+#   1) If configured to package all commits, the latest untagged commit will be packaged
+#      and will be marked as an alpha.
+#   2) Otherwise, when a tagged commit is pushed, it will be flagged as either alpha, beta,
+#      or release depending on the tag itself:
+#        - If the tag contains the word "alpha" or "debug", it will be marked as an alpha file.
+#        - If instead the tag contains the word "beta", it will be marked as a beta file.
+# https://authors.curseforge.com/docs/packaging
+release_type="alpha"
+if [ -n "$tag" ]; then
+	if [[ "${tag,,}" == *"alpha"* || "${tag,,}" == *"debug"* ]]; then
+		release_type="alpha"
+	elif [[ "${tag,,}" == *"beta"* ]]; then
+		release_type="beta"
+	else
+		release_type="release"
+	fi
 fi
 
 # Switch to WoWInterface test project if provided
