@@ -27,11 +27,6 @@
 #
 # For more information, please refer to <http://unlicense.org/>
 
-# read vars from .env file if present
-if [ -f ".env" ]; then
-	. ".env"
-fi
-
 # add some travis checks so we don't need to do it in the yaml file
 if [ -n "$TRAVIS" ]; then
 	# don't need to run the packager for pull requests
@@ -65,17 +60,17 @@ fi
 ## USER OPTIONS
 
 # Secrets for uploading
-cf_token=$CF_API_KEY
-github_token=$GITHUB_OAUTH
-wowi_token=$WOWI_API_TOKEN
-gitlab_token=$GITLAB_OAUTH
+cf_token=
+github_token=
+wowi_token=
+gitlab_token=
 
 # Variables set via command-line options
-slug=$CF_ID
-addonid=$WOWI_ID
-addonid_test=$WOWI_ID_TEST
-github_slug=$GITHUB_SLUG
-gitlab_slug=$GITLAB_SLUG
+slug=
+addonid=
+addonid_test=
+github_slug=
+gitlab_slug=
 topdir=
 releasedir=
 overwrite=
@@ -139,7 +134,6 @@ while getopts ":celzdLWHGosuit:r:p:w:b:j:k:g:m:" opt; do
 	c)
 		# Skip copying files into the package directory.
 		skip_copying="true"
-		skip_upload="true"
 		;;
 	e)
 		# Skip checkout of external repositories.
@@ -283,7 +277,7 @@ if [ -z "$topdir" ]; then
 	fi
 fi
 
-# Load secrets
+# Load secrets and settings
 if [ -f "$topdir/.env" ]; then
 	. "$topdir/.env"
 elif [ -f ".env" ]; then
@@ -292,6 +286,12 @@ fi
 [ -z "$cf_token" ] && cf_token=$CF_API_KEY
 [ -z "$github_token" ] && github_token=$GITHUB_OAUTH
 [ -z "$wowi_token" ] && wowi_token=$WOWI_API_TOKEN
+[ -z "$gitlab_token" ] && gitlab_token=$GITLAB_OAUTH
+[ -z "$slug" ] && slug=$CF_ID
+[ -z "$addonid" ] && addonid=$WOWI_ID
+[ -z "$addonid_test" ] && addonid_test=$WOWI_ID_TEST
+[ -z "$github_slug" ] && github_slug=$GITHUB_SLUG
+[ -z "$gitlab_slug" ] && gitlab_slug=$GITLAB_SLUG
 
 # Set $releasedir to the directory which will contain the generated addon zipfile.
 if [ -z "$releasedir" ]; then
@@ -580,7 +580,7 @@ hg) 	set_info_hg  "$topdir" ;;
 esac
 
 tag=$si_tag
-[[ -z "$tag" || "${tag,,}" == *"alpha"* ]] && alpha="true"
+[[ -z "$tag" || "${tag,,}" == *"alpha"* || "${tag,,}" == *"debug"* ]] && alpha="true"
 project_version=$si_project_version
 previous_version=$si_previous_tag
 project_hash=$si_project_hash
@@ -942,7 +942,6 @@ if [ -z "$nolib" ]; then
 else
 	echo "Packaging $package (nolib)"
 fi
-echo "Release type: $release_type"
 if [ -n "$project_version" ]; then
 	echo "Current version: $project_version"
 fi
@@ -951,8 +950,7 @@ if [ -n "$previous_version" ]; then
 fi
 (
 	[ -n "$classic" ] && retail="non-retail" || retail="retail"
-	[ -z "$alpha" ] && alpha="non-alpha" || alpha="alpha"
-	echo "Build type: ${retail} ${alpha} non-debug${nolib:+ nolib}"
+	echo "Build type: ${retail} ${release_type} non-debug${nolib:+ nolib}"
 	echo "Game version: ${game_version}"
 	echo
 )
@@ -1935,7 +1933,7 @@ else
 			changelog_url_wowi=
 			changelog_version_wowi="[color=orange]${project_version}[/color]"
 			changelog_previous_wowi=
-		elif [ -z "$github_token" ]; then
+		elif [ -z "$githost_token" ]; then
 			# not creating releases :(
 			changelog_previous=
 			changelog_previous_wowi=
@@ -2272,7 +2270,7 @@ if [ -z "$skip_upload" ]; then
 			result=$( echo "$_cf_payload" | curl -sS --retry 3 --retry-delay 10 \
 					-w "%{http_code}" -o "$resultfile" \
 					-H "x-api-token: $cf_token" \
-					-F "metadata=$_cf_payload" \
+					-F "metadata=<-" \
 					-F "file=@$archive" \
 					"$project_site/api/projects/$slug/upload-file" ) &&
 			{
