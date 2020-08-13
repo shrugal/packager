@@ -68,7 +68,6 @@ gitlab_token=
 # Variables set via command-line options
 slug=
 addonid=
-addonid_test=
 github_slug=
 gitlab_slug=
 topdir=
@@ -103,7 +102,7 @@ exit_code=0
 
 # Process command-line options
 usage() {
-	echo "Usage: release.sh [-celzdLWHGosui] [-t topdir] [-r releasedir] [-p curse-id] [-w wowi-id] [-w wowi-id-test] [-j github-slug] [-k gitlab-slug] [-g game-version] [-m pkgmeta.yml]" >&2
+	echo "Usage: release.sh [-celzdLWHGosui] [-t topdir] [-r releasedir] [-p curse-id] [-w wowi-id] [-j github-slug] [-k gitlab-slug] [-g game-version] [-m pkgmeta.yml]" >&2
 	echo "  -c               Skip copying files into the package directory." >&2
 	echo "  -e               Skip checkout of external repositories." >&2
 	echo "  -l               Skip @localization@ keyword replacement." >&2
@@ -121,7 +120,6 @@ usage() {
 	echo "  -r releasedir    Set directory containing the package directory. Defaults to \"\$topdir/.release\"." >&2
 	echo "  -p curse-id      Set the project id used on CurseForge for localization and uploading. (Use 0 to unset the TOC value)" >&2
 	echo "  -w wowi-id       Set the addon id used on WoWInterface for uploading. (Use 0 to unset the TOC value)" >&2
-	echo "  -b wowi-id-test  Set the addon id used on WoWInterface for uploading alpha/beta versions." >&2
 	echo "  -j github-slug   Set the project slug used on GitHub, if different from Git remote URL." >&2
 	echo "  -k gitlab-slug   Set the project slug used on GitLab, if different from Git remote URL." >&2
 	echo "  -g game-version  Set the game version to use for CurseForge uploading." >&2
@@ -202,9 +200,6 @@ while getopts ":celzdLWHGosuit:r:p:w:b:j:k:g:m:" opt; do
 		;;
 	w)
 		addonid="$OPTARG"
-		;;
-	b)
-		addonid_test="$OPTARG"
 		;;
 	j)
 		github_slug="$OPTARG"
@@ -289,7 +284,6 @@ fi
 [ -z "$gitlab_token" ] && gitlab_token=$GITLAB_OAUTH
 [ -z "$slug" ] && slug=$CF_ID
 [ -z "$addonid" ] && addonid=$WOWI_ID
-[ -z "$addonid_test" ] && addonid_test=$WOWI_ID_TEST
 [ -z "$github_slug" ] && github_slug=$GITHUB_SLUG
 [ -z "$gitlab_slug" ] && gitlab_slug=$GITLAB_SLUG
 
@@ -630,16 +624,11 @@ release_type="alpha"
 if [ -n "$tag" ]; then
 	if [[ "${tag,,}" == *"alpha"* || "${tag,,}" == *"debug"* ]]; then
 		release_type="alpha"
-	elif [[ "${tag,,}" == *"beta"* ]]; then
+	elif [[ "${tag,,}" == *"beta"* || "${tag,,}" == *"next"* || "${tag,,}" == *"ptr"* ]]; then
 		release_type="beta"
 	else
 		release_type="release"
 	fi
-fi
-
-# Switch to WoWInterface test project if provided
-if [[ -n "$addonid_test" && "$release_type" != "release" ]]; then
-	addonid=$addonid_test
 fi
 
 # Bare carriage-return character.

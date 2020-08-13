@@ -165,7 +165,7 @@ different game version as an argument.  To target classic this would be
 # Usage
 
 ```
-Usage: release.sh [-celzdLWHGosui] [-t topdir] [-r releasedir] [-p curse-id] [-w wowi-id] [-b wowi-id-test] [-j github-slug] [-k gitlab-slug] [-g game-version]
+Usage: release.sh [-celzdLWHGosui] [-t topdir] [-r releasedir] [-p curse-id] [-w wowi-id] [-j github-slug] [-k gitlab-slug] [-g game-version]
   -c               Skip copying files into the package directory.
   -e               Skip checkout of external repositories.
   -l               Skip @localization@ keyword replacement.
@@ -183,7 +183,6 @@ Usage: release.sh [-celzdLWHGosui] [-t topdir] [-r releasedir] [-p curse-id] [-w
   -r releasedir    Set directory containing the package directory. Defaults to "$topdir/.release".
   -p curse-id      Set the project id used on CurseForge for localization and uploading. (Use 0 to unset the TOC value)
   -w wowi-id       Set the addon id used on WoWInterface for uploading. (Use 0 to unset the TOC value)
-  -b wowi-id-test  Set the addon id used on WoWInterface for uploading alpha/beta versions.
   -j github-slug   Set the project slug used on GitHub, if different from Git remote URL.
   -k gitlab-slug   Set the project slug used on GitLab, if different from Git remote URL.
   -g game-version  Set the game version to use for CurseForge uploading.
@@ -195,7 +194,6 @@ In addition, the following environmental variables are accepted:
   - `CF_ID` - a CurseForge project ID.
   - `CF_API_KEY` - a [CurseForge API token](https://wow.curseforge.com/account/api-tokens), **required** for the CurseForge API to fetch localization and upload files.
   - `WOWI_ID` - a WoWInterface addon ID.
-  - `WOWI_ID_TEST` - a different WoWInterface addon ID for alpha/beta versions (optional).
   - `WOWI_API_TOKEN` - a [WoWInterface API token](https://www.wowinterface.com/downloads/filecpl.php?action=apitokens), **required** for uploading to WoWInterface.
   - `GITHUB_SLUG` - a GitHub project slug, if different from Git remote URL.
   - `GITHUB_OAUTH` - a [GitHub personal access token](https://github.com/settings/tokens), **required** for uploading to GitHub.
