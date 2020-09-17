@@ -2452,7 +2452,7 @@ if [ -z "$skip_upload" ]; then
 			_gh_payload=$( cat <<-EOF
 			{
 				"tag_name": "$tag",
-				"name": "Version $tag",
+				"name": "$tag",
 				"body": $( cat "$changelog_githost" | jq --slurp --raw-input '.' ),
 				"draft": false,
 				"prerelease": $( [[ "$release_type" != "release" ]] && echo true || echo false )
